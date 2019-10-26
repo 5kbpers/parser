@@ -1137,7 +1137,6 @@ type LoadDataStmt struct {
 	dmlNode
 
 	IsLocal           bool
-	Path              string
 	OnDuplicate       OnDuplicateKeyHandlingType
 	Table             *TableName
 	Columns           []*ColumnName
@@ -1155,8 +1154,6 @@ func (n *LoadDataStmt) Restore(ctx *RestoreCtx) error {
 	if n.IsLocal {
 		ctx.WriteKeyWord("LOCAL ")
 	}
-	ctx.WriteKeyWord("INFILE ")
-	ctx.WriteString(n.Path)
 	if n.OnDuplicate == OnDuplicateKeyHandlingReplace {
 		ctx.WriteKeyWord(" REPLACE")
 	} else if n.OnDuplicate == OnDuplicateKeyHandlingIgnore {

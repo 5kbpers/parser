@@ -10027,14 +10027,13 @@ RevokeRoleStmt:
  * See https://dev.mysql.com/doc/refman/5.7/en/load-data.html
  *******************************************************************************************/
 LoadDataStmt:
-	"LOAD" "DATA" LocalOpt "INFILE" stringLit DuplicateOpt "INTO" "TABLE" TableName CharsetOpt Fields Lines IgnoreLines ColumnNameOrUserVarListOptWithBrackets LoadDataSetSpecOpt
+	"LOAD" "DATA" LocalOpt DuplicateOpt "INTO" "TABLE" TableName CharsetOpt Fields Lines IgnoreLines ColumnNameOrUserVarListOptWithBrackets LoadDataSetSpecOpt
 	{
 		x := &ast.LoadDataStmt{
-			Path:                  $5,
-			OnDuplicate:           $6.(ast.OnDuplicateKeyHandlingType),
-			Table:                 $9.(*ast.TableName),
-			ColumnsAndUserVars:    $14.([]*ast.ColumnNameOrUserVar),
-			IgnoreLines:           $13.(uint64),
+			OnDuplicate:           $4.(ast.OnDuplicateKeyHandlingType),
+			Table:                 $7.(*ast.TableName),
+			ColumnsAndUserVars:    $12.([]*ast.ColumnNameOrUserVar),
+			IgnoreLines:           $11.(uint64),
 		}
 		if $3 != nil {
 			x.IsLocal = true
@@ -10044,14 +10043,14 @@ LoadDataStmt:
 				x.OnDuplicate = ast.OnDuplicateKeyHandlingIgnore
 			}
 		}
-		if $11 != nil {
-			x.FieldsInfo = $11.(*ast.FieldsClause)
+		if $9 != nil {
+			x.FieldsInfo = $9.(*ast.FieldsClause)
 		}
-		if $12 != nil {
-			x.LinesInfo = $12.(*ast.LinesClause)
+		if $10 != nil {
+			x.LinesInfo = $10.(*ast.LinesClause)
 		}
-		if $15 != nil {
-			x.ColumnAssignments = $15.([]*ast.Assignment)
+		if $13 != nil {
+			x.ColumnAssignments = $13.([]*ast.Assignment)
 		}
 		columns := []*ast.ColumnName{}
 		for _, v := range x.ColumnsAndUserVars {
